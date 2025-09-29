@@ -26,7 +26,6 @@ describe("API Reqres com API Key", () => {
     });
 
 
-     // Obter user por ID
      it("Obter Usuário por ID", async () => {
       await p
         .spec()
@@ -41,7 +40,6 @@ describe("API Reqres com API Key", () => {
         });
     });
 
-    // Atualizar user via PUT
     it("Atualizar Usuário (PUT)", async () => {
       await p
         .spec()
@@ -58,7 +56,6 @@ describe("API Reqres com API Key", () => {
         });
     });
 
-    // Atualizar user via PATCH
     it("Atualizar Usuário (PATCH)", async () => {
       await p
         .spec()
@@ -73,7 +70,6 @@ describe("API Reqres com API Key", () => {
         });
     });
 
-    // Deletar user
     it("Deletar Usuário", async () => {
       await p
         .spec()
@@ -83,4 +79,71 @@ describe("API Reqres com API Key", () => {
     });
   });
 
+  describe("RESOURCES", () => {
+    it("Listar resources - Paginado", async () => {
+      await p
+        .spec()
+        .get(`${baseUrl}/resource?page=1`)
+        .withHeaders("x-api-key", apiKey)
+        .expectStatus(StatusCodes.OK)
+        .expectJsonLike({
+          page: 1
+        });
+    });
+
+
+     it("Obter resources por ID", async () => {
+      await p
+        .spec()
+        .get(`${baseUrl}/resource/2`)
+        .withHeaders("x-api-key", apiKey)
+        .expectStatus(StatusCodes.OK)
+        .expectJsonLike({
+          data: {
+            id: 2,
+            year: 2001
+          }
+        });
+    });
+
+    it("Atualizar resources (PUT)", async () => {
+      await p
+        .spec()
+        .put(`${baseUrl}/resource/2`)
+        .withHeaders("x-api-key", apiKey)
+        .withJson({
+          year: "2001",
+          color: "Yellow"
+        })
+        .expectStatus(StatusCodes.OK)
+        .expectJsonLike({
+          year: "2001",
+          color: "Yellow"
+        });
+    });
+
+    it("Atualizar resources (PATCH)", async () => {
+      await p
+        .spec()
+        .patch(`${baseUrl}/resource/2`)
+        .withHeaders("x-api-key", apiKey)
+        .withJson({
+          color: "marrombombom"
+        })
+        .expectStatus(StatusCodes.OK)
+        .expectJsonLike({
+          color: "marrombombom"
+        });
+    });
+
+    it("Deletar resources", async () => {
+      await p
+        .spec()
+        .delete(`${baseUrl}/resource/2`)
+        .withHeaders("x-api-key", apiKey)
+        .expectStatus(StatusCodes.NO_CONTENT);
+    });
+  });
+
+  
   });
